@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Charmer</string>
+    <string name="no_tienes_una_cuenta">¿No tienes una cuenta?.</string>
+    <string name="mujer">Mujer</string>
+    <string name="errorMail">Email invalido</string>
+    <string name="errorPass">Contraseña insegura</string>
+    <string name="errorConpass">Las contraseñas no coinciden</string>
+    <string name="errorUser">Usuario ya registrado</string>
+    <string name="errorData">Rellene los datos</string>
+</resources>
