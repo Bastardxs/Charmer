@@ -7,4 +7,7 @@
     <string name="errorConpass">Las contraseñas no coinciden</string>
     <string name="errorUser">Usuario ya registrado</string>
     <string name="errorData">Rellene los datos</string>
+    <string name="errorName">Ingrese nombre y apellido</string>
+    <string name="errorFono">Ingrese un numero real</string>
+    <string name="errorLugar">Ingrese su ubicacion real</string>
 </resources>

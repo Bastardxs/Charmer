@@ -79,19 +79,18 @@ public class TipoUsuario extends AppCompatActivity {
         btnContinuar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String mail = getIntent().getExtras().getString("mail");
-                String pass = getIntent().getExtras().getString("pass");
-
                 if(RB_1.isChecked() == true){
                     Toast.makeText(getApplicationContext(), "Elegiste persona", Toast.LENGTH_SHORT).show();
 
                     Intent Seguir = new Intent(getApplicationContext(), Crear_Perfil_Persona.class);
-                    Seguir.putExtra("mail", mail);
-                    Seguir.putExtra("pass", pass);
+                    Seguir.putExtra("tipo", 0);
                     startActivity(Seguir);
 
                 }else if(RB_2.isChecked() == true){
                     Toast.makeText(getApplicationContext(), "Elegiste empresa", Toast.LENGTH_SHORT).show();
+                    Intent Seguir = new Intent(getApplicationContext(), Crear_Perfil_Persona.class);
+                    Seguir.putExtra("tipo", 1);
+                    startActivity(Seguir);
                 }else{
                     Toast.makeText(getApplicationContext(), "Seleccione Una opción", Toast.LENGTH_SHORT).show();
                 }

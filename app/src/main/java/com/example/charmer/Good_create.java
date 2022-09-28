@@ -22,12 +22,7 @@ public class Good_create extends AppCompatActivity {
         btn_CrearPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String mail = getIntent().getExtras().getString("mail");
-                String pass = getIntent().getExtras().getString("pass");
-
                 Intent Seguir = new Intent(getApplicationContext(), TipoUsuario.class);
-                Seguir.putExtra("mail", mail);
-                Seguir.putExtra("pass", pass);
                 startActivity(Seguir);
             }
         });

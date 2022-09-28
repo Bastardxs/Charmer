@@ -2,6 +2,7 @@ package com.example.charmer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -24,7 +25,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -38,6 +38,8 @@ public class RegistroActivity extends AppCompatActivity {
     Button btn_crear;
     TextView link_login;
 
+    static boolean existe;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +50,6 @@ public class RegistroActivity extends AppCompatActivity {
         confpass = (EditText) findViewById(R.id.confpass_crear);
         btn_crear = (Button) findViewById(R.id.btn_crear_cuenta);
         link_login = (TextView) findViewById(R.id.linkLogin);
-
-        DBHelper DB = new DBHelper(this);
 
         btn_crear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,26 +67,27 @@ public class RegistroActivity extends AppCompatActivity {
                 else{
                     if(validarEmail(user)){
                         if(contrasena.equals(repass)){
-                            Boolean checkuser = DB.checkusername(user);
                             if(validarleght(contrasena)){
-                                if(checkuser == false){
-
-                                    Toast.makeText(RegistroActivity.this,"usuario registrado",Toast.LENGTH_SHORT).show();
-
+                                new Envio(RegistroActivity.this).execute(user,contrasena);
+                                if(RegistroActivity.existe){
                                     Correo.setText("");
                                     password.setText("");
                                     confpass.setText("");
 
-                                    new envio(RegistroActivity.this).execute(user,contrasena);
+                                    SharedPreferences sp;
+                                    SharedPreferences.Editor edit;
+                                    sp = getSharedPreferences("enter",MODE_PRIVATE);
+                                    edit = sp.edit();
+                                    edit.putString("user",user);
+                                    edit.commit();
 
                                     Intent intent = new Intent(getApplicationContext(), Good_create.class);
-                                    intent.putExtra("mail", user);
-                                    intent.putExtra("pass", contrasena);
                                     startActivity(intent);
 
                                 }else{
                                     Correo.setError(getString(R.string.errorUser));
                                     Correo.requestFocus();
+                                    RegistroActivity.existe = true;
                                 }
                             }else{
                                 password.setError(getString(R.string.errorPass));
@@ -112,9 +113,9 @@ public class RegistroActivity extends AppCompatActivity {
         });
     }
 
-    public static class envio extends AsyncTask<String,Void,String>{
+    public static class Envio extends AsyncTask<String,Void,String>{
         private WeakReference<Context> context;
-        public envio(Context context){
+        public Envio(Context context){
             this.context = new WeakReference<>(context);
         }
         protected String doInBackground(String... params){
@@ -162,7 +163,11 @@ public class RegistroActivity extends AppCompatActivity {
             return result;
         }
         protected void onPostExecute(String result){
-            Toast.makeText(context.get(),result,Toast.LENGTH_LONG).show();
+            int num = Integer.parseInt(result);
+            if(num==0)
+                RegistroActivity.existe = false;
+            else
+                RegistroActivity.existe = true;
         }
     }
 
